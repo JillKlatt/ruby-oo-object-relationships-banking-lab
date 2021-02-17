@@ -1,44 +1,33 @@
 require_relative 'bank_account'
+require 'pry'
 
 class Transfer
-  attr_accessor :sender, :receiver, :status, :amount
+  attr_accessor :status
+  attr_reader :sender, :receiver, :amount
 
   def initialize(sender, receiver, amount)
     @sender = sender
     @receiver = receiver
     @status = "pending"
-    @amount = 50
+    @amount = amount
   end
 
   def valid?
-    if @sender.valid? && @receiver.valid?
-      return true
-    else
-      false
-    end
+    sender.valid? && receiver.valid?
   end
-
-#  def execute_transaction
-#     if @sender.balance > @amount && valid? && @status == "pending"
-#       @receiver.balance += @amount
-#       @sender.balance -= @amount
-#       @status = "complete"
-#     else
-#       @status = "rejected"
-#       return "Transaction rejected. Please check your account balance."
-#     end
-#   end
 
   def execute_transaction
-    if valid? && @sender.balance > self.amount && self.status == "pending"
-      @sender.balance -= self.amount
-      @receiver.balance += self.amount
-      self.status = "complete"
+    # binding.pry
+    if valid? && @sender.balance > @amount && @status == "pending"
+      @sender.balance -= @amount
+      @receiver.balance += @amount
+      @status = "complete"
     else
-      self.status = "rejected"
-      "Transaction rejected. Please check your account balance."
+      @status = "rejected"
+      return "Transaction rejected. Please check your account balance."
     end
   end
+  # binding.pry
 
   # def execute_transaction
   #   if @sender.balance > @amount && @status == "pending"
